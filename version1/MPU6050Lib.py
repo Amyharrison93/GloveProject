@@ -68,14 +68,19 @@ def readAccel(mpu, intAddr : int = mpuDef.MPU6050_DEVICE_ID):
         return e
     
 def radToDeg(rad):
+    '''converts an array of radians into degrees
+    returns an array the same size as the input containing floats'''
     print(rad)
     deg = np.zeros(len(rad))
     for i in range(0, len(rad)):
         deg[i] = (float(abs(rad[i])) * 57.295779513)%360
     return deg
     
-def absOrientation(mpu, intAddr : int = mpuDef.MPU6050_DEVICE_ID):
+def absOrientation(accel, gyro):
+    '''calculates the absolute orientation from the acceleration and the gyroscope data
+    returns an array[3] of X, Y and Z rotations '''
     arryOrientation = [0,0,0]
+    
     
     return arryOrientation
 
