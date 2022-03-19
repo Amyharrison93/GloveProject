@@ -40,10 +40,11 @@ def main():
                 print(e)
             accelData[i] = result1
             gyroData[i] = result2
-            
+            time.sleep(0.1)
         
-        graph.plotPoints3d(accelData)
-        time.sleep(1)
+        #graph.plotPoints3d(accelData)
+        #graph.animate(accelData)
+        
         
         
 if __name__ == "__main__":
