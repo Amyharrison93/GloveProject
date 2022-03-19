@@ -4,9 +4,16 @@ import sys
 import board
 import adafruit_mpu6050
 import numpy as np
+import math
 
 sys.path.append(os.getcwd())
 import MPU6050Def as mpuDef
+
+def vector_2_degrees(x, y):
+    angle = degrees(math.atan2(y, x))
+    if angle < 0:
+        angle += 360
+    return angle
 
 def ad0Init(patternLength : int):
     '''initialises the pattern required for activating the correct ad0
@@ -67,20 +74,35 @@ def readAccel(mpu, intAddr : int = mpuDef.MPU6050_DEVICE_ID):
     except Exception as e:
         return e
     
+def getAccelAngle(mpu):
+    x, y, z = mpu.acceleration
+    return vector_2_degrees(x, z), vector_2_degrees(y, z), vector_2_degrees(x, y)
+
 def radToDeg(rad):
     '''converts an array of radians into degrees
     returns an array the same size as the input containing floats'''
-    #print(rad)
     deg = np.zeros(len(rad))
     for i in range(0, len(rad)):
-        deg[i] = (float(abs(rad[i])) * 57.295779513)#%360
+        deg[i] = (float(rad[i]) * 180)/math.pi
     return deg
+
+def rVector(accel):
+    '''caLculated the r vector of the accelerometer
+    returns float rvector'''
+    rVector = (accel[0]^2)+(accel[1]^2)+(accel[2]^2) 
+    return rVector
     
-def absOrientation(accel, gyro):
+def gyroAngle(gyro, deltaTime, arryOrientation = [0,0,0]):
     '''calculates the absolute orientation from the acceleration and the gyroscope data
-    returns an array[3] of X, Y and Z rotations '''
-    arryOrientation = [0,0,0]
+    returns an array[3] of X, Y and Z rotations 
+    this does not work'''
+    gyroDeg = radToDeg(gyro)
     
+    arryOrientation = (
+        (arryOrientation[1] + gyroDeg[1]) * deltaTime,     #pitch x
+        (arryOrientation[0] + gyroDeg[0]) * deltaTime,     #yaw y
+        (arryOrientation[2] + gyroDeg[2]) * deltaTime,     #roll z
+    )
     
     return arryOrientation
 

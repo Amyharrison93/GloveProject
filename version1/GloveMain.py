@@ -3,6 +3,7 @@
 import os
 import sys
 import time
+from datetime import datetime
 sys.path.append(os.getcwd())
 
 import MPU6050Lib as mpu
@@ -26,15 +27,18 @@ def main():
     
     time.sleep(0.1)
     
-    sensor1 = mpu.initSensor(0x68)
-    print(sensor1)
+    imu1 = mpu.initSensor(0x68)
+    print(imu1)
     
     time.sleep(0.1)
     
     sensor = [0,0,0]
     accelData = [0,0,0]
     gyroData = [0,0,0]
-    absData = [0,0,0]
+    accelAngleData = [0,0,0]
+    gyroAngleData = [0,0,0]
+    gyroAngleData = [0,0,0]
+    nowTime = datetime.now()
     
     while True:
         for j in range(0,len(ad0Pattern)):
@@ -46,19 +50,31 @@ def main():
                 ad0Pattern = mpu.ad0Toggle(ad0Pattern)
                 
                 #print(ad0PatternFlip)
-                result1 = mpu.readAccel(sensor1)
-                result2 = mpu.readGyro(sensor1)
-                #print("Accel retrurned: {}, gyro returned: {}".format(result1, result2))
+                prvTime = nowTime
+                nowTime = datetime.now()
+                deltaTime = nowTime - prvTime
+                deltaTime = deltaTime.total_seconds()
+                
+                accelRead = mpu.readAccel(imu1)
+                gyroRead = mpu.readGyro(imu1)
+                accelAngle = mpu.getAccelAngle(imu1)
+                
                 try:
-                    #print("Accel in degrees = {}".format(mpu.radToDeg(result2)))
-                    accelData[i] = result1
-                    gyroData[i] = result2
-                    absData[i] = mpu.radToDeg(result2)
+                    accelData[i] = accelRead
+                    gyroData[i] = gyroRead
+                    accelAngleData[i] = accelAngle
+                    
+                    try:
+                        gyroAngleData[i] = mpu.radToDeg(mpu.gyroAngle(gyroRead, deltaTime, gyroAngleData[i]))
+                    except: 
+                        gyroAngleData[i] = mpu.gyroAngle(gyroRead, deltaTime)
+                    print("sensor 1 abs roll = : {}, gyro data = {}, timeDelta = {}".format(gyroAngleData[1][0], gyroData[1][0], deltaTime))
+                    
                 except Exception as e:
                     print(e)
                 
-            time.sleep(0.1)    
-            sensor[j] = accelData, gyroData, absData
+                time.sleep(0.1)    
+            sensor[j] = accelData, gyroData, gyroAngleData
         
         #print("sensor value = {}".format(sensor[0]))        
         #graph.plotPoints3d(accelData)
