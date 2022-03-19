@@ -1,3 +1,4 @@
+from math import degrees
 import os
 import sys
 import board
@@ -61,12 +62,17 @@ def readAccel(mpu, intAddr : int = mpuDef.MPU6050_DEVICE_ID):
     returns array of 3 floats for X, Y and Z '''
     try:
         arryAccel = mpu.acceleration
-
-
         return arryAccel
     
     except Exception as e:
         return e
+    
+def radToDeg(rad):
+    print(rad)
+    deg = np.zeros(len(rad))
+    for i in range(0, len(rad)):
+        deg[i] = (float(abs(rad[i])) * 57.295779513)%360
+    return deg
     
 def absOrientation(mpu, intAddr : int = mpuDef.MPU6050_DEVICE_ID):
     arryOrientation = [0,0,0]
