@@ -1,3 +1,6 @@
+'''
+library to streamline the use and functionality of the rpiGPIOzero and RPi.GPIO libraries
+'''
 from gpiozero import LED as led
 import RPi.GPIO as gpio
 import subprocess
@@ -17,7 +20,7 @@ def gpioSetup(pinCount : int):
         gpio.setup(defaultGPIOPins[i], gpio.OUT)
         
 def pinInit():
-    '''initialises pin 0 value to ensure a sensor is available for read'''
+    '''initia1111lises pin 0 value to ensure a sensor is available for read'''
     gpio.output(defaultGPIOPins[0], 1)
 
 def setPins(pattern, pins = defaultGPIOPins):

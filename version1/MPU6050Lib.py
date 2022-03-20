@@ -1,3 +1,7 @@
+'''
+library containing funtions to make the MPU6050 easier to work with
+'''
+
 from math import degrees
 import os
 import sys
@@ -75,6 +79,8 @@ def readAccel(mpu, intAddr : int = mpuDef.MPU6050_DEVICE_ID):
         return e
     
 def getAccelAngle(mpu):
+    '''gets the vector angle of the IMU from the accelerometer data
+    returns tuple of floats'''
     x, y, z = mpu.acceleration
     return vector_2_degrees(x, z), vector_2_degrees(y, z), vector_2_degrees(x, y)
 
