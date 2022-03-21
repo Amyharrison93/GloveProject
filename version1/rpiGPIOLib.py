@@ -1,9 +1,7 @@
 '''
 library to streamline the use and functionality of the rpiGPIOzero and RPi.GPIO libraries
 '''
-from gpiozero import LED as led
 import RPi.GPIO as gpio
-import subprocess
 
 defaultI2CPins = [3, 5]
 defaultGPIOPins = [4, 17, 27, 22, 10, 9, 11, 5, 6, 13, 19, 26, 14, 15, 18, 23, 24, 25, 8, 7, 12, 16, 20, 21]

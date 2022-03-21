@@ -4,25 +4,25 @@ library to simplify the use of graphing libraries found in python
 
 #import matplotlib
 #matplotlib.use('Agg')
-import matplotlib.pyplot as plt
-import matplotlib.animation as animation
+from matplotlib.pyplot import plot, show, figure
+from matplotlib.animation import FuncAnimation
 from matplotlib import style
-import numpy as np
+from numpy import array
 
 style.use('fivethirtyeight')
 
-fig = plt.figure()
+fig = figure()
 ax1 = fig.add_subplot(1,1,1)
 
 def TestPlot():
     # X axis parameter:
-    xaxis = np.array([2, 8])
+    xaxis = array([2, 8])
 
     # Y axis parameter:
-    yaxis = np.array([4, 9])
+    yaxis = array([4, 9])
 
-    plt.plot(xaxis, yaxis)
-    plt.show()
+    plot(xaxis, yaxis)
+    show()
     
 def plotPoints2d(points):
     '''plots points onto a dynamic graph
@@ -31,8 +31,8 @@ def plotPoints2d(points):
     xpoints = points[0]
     ypoints = points[1]
     
-    plt.plot(xpoints, ypoints, 'o')
-    plt.show()
+    plot(xpoints, ypoints, 'o')
+    show()
     
 def plotPoints3d(points):
     '''plots points onto a dynamic graph
@@ -42,8 +42,8 @@ def plotPoints3d(points):
     ypoints = points[1]
     zpoints = points[2]
     
-    plt.plot(xpoints, ypoints, zpoints, 'o')
-    plt.show()
+    plot(xpoints, ypoints, zpoints, 'o')
+    show()
     
 def animate(data):
     xs = data[0]
@@ -51,5 +51,5 @@ def animate(data):
     ax1.clear()
     ax1.plot(xs, ys)
     
-    ani = animation.FuncAnimation(fig, animate, interval=1000)
-    plt.show()
+    ani = FuncAnimation(fig, animate, interval=1000)
+    show()

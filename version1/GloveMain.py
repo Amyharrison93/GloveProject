@@ -1,15 +1,16 @@
 #!/usr/bin/env python
 
-import os
-import sys
-import time
+from os import getcwd
+from sys import path
 from datetime import datetime
 from numpy import zeros
-sys.path.append(os.getcwd())
+from time import sleep
+path.append(getcwd())
 
 import MPU6050Lib as mpu
 import rpiGPIOLib as gpio
 import GloveOperations as glvOp
+import DataOutLib as data
 #import GraphOutLib as graph
 
 def main():
@@ -17,19 +18,21 @@ def main():
     Main program function
     '''
     
+    fileName = "GloveDataCapture"
+    data.writeCSV(fileName,"")
     nowTime = datetime.now()
     
-    sensorCount : int = 4
+    sensorCount : int = 7
     sensorMain : int = 0
+    count : int = 0
     
-    sensor = [0,0,0]
-    accelData = [0,0,0]
-    gyroData = [0,0,0]
-    accelAngleData = [0,0,0]
-    gyroAngleData = [0,0,0]
-    gyroAngleData = [0,0,0]
-    
-    output = zeros(sensorCount)
+    sensor = zeros(shape = (sensorCount, 3))
+    accelData = zeros(shape = (sensorCount, 3))
+    gyroData = zeros(shape = (sensorCount, 3))
+    accelAngleData = zeros(shape = (sensorCount, 3))
+    gyroAngleData = zeros(shape = (sensorCount, 3))
+    gyroAngleData = zeros(shape = (sensorCount, 3))
+    output = zeros(shape = (sensorCount, 3))
     
     #graph.TestPlot()
     gpio.gpioSetup(sensorCount)
@@ -39,29 +42,37 @@ def main():
     ad0PatternFlip = mpu.ad0Init(sensorCount)
     
     for i in range(0, len(ad0PatternFlip)):
-        ad0PatternFlip[i] = abs(int(ad0PatternFlip[i]) - 1)
+        ad0PatternFlip[i] = abs(int(ad0PatternFlip[i])-1)
+        
     gpio.setPins(ad0PatternFlip)
     
-    time.sleep(0.1)
+    sleep(0.1)
     
     imu1 = mpu.initSensor(0x68)
     
-    time.sleep(0.1)
+    sleep(0.1)
     
     while True:
+        data.appendCSV(fileName, "{},".format(str(datetime.now())))
+        
+        prvTime = nowTime
+        nowTime = datetime.now()
+        deltaTime = nowTime - prvTime
+        deltaTime = deltaTime.seconds
+        data.appendCSV(fileName, "{}". format(str(deltaTime)))
+
         for j in range(0,len(ad0Pattern)):
             for i in range(0, len(ad0Pattern)):
-                for k in range(0,len(ad0Pattern)):
-                    ad0PatternFlip[k] = abs(int(ad0Pattern[k]) - 1)
-            
-                gpio.setPins(ad0PatternFlip)
+                
                 ad0Pattern = mpu.ad0Toggle(ad0Pattern)
                 
+                
+                for k in range(0,len(ad0Pattern)):
+                    ad0PatternFlip[k] = abs(int(ad0Pattern[k]) - 1)
+                
+                gpio.setPins(ad0PatternFlip)
+                
                 #print(ad0PatternFlip)
-                prvTime = nowTime
-                nowTime = datetime.now()
-                deltaTime = nowTime - prvTime
-                deltaTime = deltaTime.total_seconds()
                 
                 accelRead = mpu.readAccel(imu1)
                 gyroRead = mpu.readGyro(imu1)
@@ -76,22 +87,25 @@ def main():
                         gyroAngleData[i] = mpu.radToDeg(mpu.gyroAngle(gyroRead, deltaTime, gyroAngleData[i]))
                     except: 
                         gyroAngleData[i] = mpu.gyroAngle(gyroRead, deltaTime)
-                    #print("sensor 1 abs roll = : {}, gyro data = {}, timeDelta = {}".format(gyroAngleData[1][0], gyroData[1][0], deltaTime))
+                    #print("sensor {} abs roll = : {}, gyro data = {}, timeDelta = {}".format(i, accelAngleData[i][0], gyroData[i][0], deltaTime))
                     
                 except Exception as e:
                     print(e)
                 
-                time.sleep(0.01)    
-            sensor[j] = accelData, gyroData, gyroAngleData
+                #sleep(0.01)
             
-            #for i in sensor:
-            #    if i == 1:
-            #        for j in sensor[sensorMain]:
-            #            output[i][j] = sensor[sensorMain][j]
-            #    else: 
-            #        output[i] = glvOp.calcoffset(sensor[sensorMain], sensor[i])
+                for k in range(0, len(sensor)):
+                        #output[k] = glvOp.calcoffset(accelAngleData[sensorMain], accelAngleData[k])
+                        output[k] = accelAngleData[k]
+                        if count < 500:
+                            data.appendCSV(fileName, "{},".format(str(output[k]).replace(" ", ",").replace("[", "").replace("]","")))
             #print(output)
-        
+            if count < 501:
+                count += 1
+            elif count == 501:
+                print("===============================Finished data collection=======================================")
+                count += 1
+        data.appendCSV(fileName, "\r\n,")
         #print("sensor value = {}".format(sensor[0]))        
         #graph.plotPoints3d(accelData)
         #graph.animate(accelData)
