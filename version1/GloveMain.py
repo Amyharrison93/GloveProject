@@ -21,6 +21,7 @@ def main():
     fileName = "GloveDataCapture"
     data.writeCSV(fileName,"")
     nowTime = datetime.now()
+    nowTime2 = datetime.now()
     
     sensorCount : int = 7
     sensorMain : int = 0
@@ -59,10 +60,17 @@ def main():
         nowTime = datetime.now()
         deltaTime = nowTime - prvTime
         deltaTime = deltaTime.seconds
+        #print(deltaTime)
+        
         data.appendCSV(fileName, "{}". format(str(deltaTime)))
 
         for j in range(0,len(ad0Pattern)):
             for i in range(0, len(ad0Pattern)):
+                prvTime2 = nowTime2
+                nowTime2 = datetime.now()
+                deltaTime2 = nowTime2 - prvTime2
+                deltaTime2 = deltaTime2.seconds
+                #print(deltaTime2)
                 
                 ad0Pattern = mpu.ad0Toggle(ad0Pattern)
                 
