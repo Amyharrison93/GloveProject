@@ -1,0 +1,41 @@
+*Pick And Place List
+*Company=
+*Author=
+*eMail=
+*
+*Project=GloveHat
+*Date=08:13:45
+*CreatedBy=Fritzing 0.9.3b.04.19.5c895d327c44a3114e5fcc9d8260daf0cbb52806
+*
+*
+*Coordinates in mm, always center of component
+*Origin 0/0=Lower left corner of PCB
+*Rotation in degree (0-360, math. pos.)
+*
+*No;Value;Package;X;Y;Rotation;Side;Name
+1;;;44.3343;-32.4705;0;Bottom;Raspberry Pi 1
+2;;5 mm [THT];50.8522;-47.7702;180;Bottom;LED3
+3;330;THT;48.3122;-40.8412;0;Bottom;R3
+4;;;5.13223;-5.28121;0;Bottom;Hole4
+5;;;63.5522;-5.28121;0;Bottom;Hole3
+6;;molex-1x6_lock;16.5622;-35.2532;180;Bottom;JP1
+7;;;27.9922;-48.4612;0;Bottom;Via2
+8;;5 mm [THT];50.8522;-24.9102;180;Bottom;LED6
+9;;5 mm [THT];15.2922;-24.9102;180;Bottom;LED4
+10;330;THT;30.5322;-40.8412;0;Bottom;R2
+11;;molex-1x6_lock;52.1222;-35.2532;180;Bottom;JP3
+12;;;43.2322;-25.6012;0;Bottom;Via1
+13;330;THT;48.3122;-17.9812;0;Bottom;R6
+14;;molex-1x6_lock;52.1222;-12.3932;180;Bottom;JP6
+15;;5 mm [THT];15.2922;-47.7702;180;Bottom;LED1
+16;;;5.13223;-58.6212;0;Bottom;Hole2
+17;;5 mm [THT];33.0722;-47.7702;180;Bottom;LED2
+18;;molex-1x6_lock;34.3422;-35.2532;180;Bottom;JP2
+19;;molex-1x6_lock;16.5622;-12.3932;180;Bottom;JP4
+20;;;63.5522;-58.6212;0;Bottom;Hole1
+21;;5 mm [THT];33.0722;-24.9102;180;Bottom;LED5
+22;330;THT;12.7522;-17.9812;0;Bottom;R4
+23;330;THT;30.5322;-17.9812;0;Bottom;R5
+24;;molex-1x6_lock;34.3422;-12.3932;180;Bottom;JP5
+25;330;THT;12.7522;-40.8412;0;Bottom;R1
+26;;;35.6122;-51.0012;0;Bottom;Via3

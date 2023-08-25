@@ -1,5 +1,6 @@
-#address definitions for the MPU6050 sensor
-
+'''
+address definitions for the MPU6050 sensor
+'''
 MPU6050_I2CADDR_DEFAULT : int =  0x68    #///< MPU6050 default i2c address w/ AD0 high
 MPU6050_DEVICE_ID : int =  0x68    #///< The correct MPU6050_WHO_AM_I value
 MPU6050_DEVICE_ID_2 : int =  0x69    #///< The correct MPU6050_WHO_AM_I value
